@@ -17,11 +17,25 @@ public class InscriptionRessource {
 	
 	@PostMapping("/benevole/{username}/{password}")
 	public void addBenevole(@PathVariable String username, @PathVariable String password) {
+	    System.out.println("username : " + username + " password : " + password);
+	    connexionBDD();
+	    System.out.println("Adding user to database...");
+	    addUser(username, password);
+	    System.out.println("User added successfully!");
+	    closeConnection();
+	}
+
+	/*
+	@PostMapping("/benevole/{username}/{password}")
+	public void addBenevole(@PathVariable String username, @PathVariable String password) {
+		System.out.println("username : " + username + " password : "+ password);
 		connexionBDD();
-	//	addUser(username, password);
+		System.out.println("username : " + username + " password : "+ password);
+		addUser(username, password);
 	//	addBenevole
 		
 	}
+	*/
 	
 	/*
 	@PostMapping("/Demandeur")
@@ -36,35 +50,33 @@ public class InscriptionRessource {
 	//	ajoutValidateur();
 	}*/
 	
-	//en attendant on le met ici :
-	public void connexionBDD() {
-		
-		String DBurl = "jdbc:mysql://srv-bdens.insa-toulouse.fr:3306/projet_gei_045";
-		
-	//	String DBurl = "mysql -h srv-bdens.insa-toulouse.fr --port=3306 -u projet_gei_045 -p projet_gei_045";
+
 	
-		try {
-			con = DriverManager.getConnection(DBurl, "projet_gei_045", "IG0aito0");
-			System.out.println("Connexion établie");
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			System.err.println("Impossible de se connecter à la base de données.");
-		}
-		
-		running = true;
-		
-		while(running) {
-			
-		}
-		
-		try {
-			con.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			System.err.println("La base de données n'a pas pu être correctement fermée");
-		}			
+	public void connexionBDD() {
+	    String DBurl = "jdbc:mysql://srv-bdens.insa-toulouse.fr:3306/projet_gei_045?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
+
+	    try {
+	        con = DriverManager.getConnection(DBurl, "projet_gei_045", "IG0aito0");
+	        System.out.println("Connexion établie");
+	    } catch (SQLException e) {
+	        System.err.println("Impossible de se connecter à la base de données: " + e.getMessage());
+	        e.printStackTrace();
+	    }
 	}
-	/*
+	
+	public void closeConnection() {
+	    try {
+	        if (con != null && !con.isClosed()) {
+	            con.close();
+	            System.out.println("Connexion fermée");
+	        }
+	    } catch (SQLException e) {
+	        System.err.println("La base de données n'a pas pu être correctement fermée: " + e.getMessage());
+	        e.printStackTrace();
+	    }
+	}
+
+	
 	//Fonction qui permet d'insérer un utilisateur dans notre base de données
 			public static void addUser(String username, String password) {
 				String requete = "INSERT INTO User (username, password) "
@@ -91,6 +103,5 @@ public class InscriptionRessource {
 					System.out.println(e);
 				}
 			}
-	*/
 
 }

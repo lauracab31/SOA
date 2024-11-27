@@ -29,7 +29,7 @@ public class BenevoleRessource {
 		return b;
 	}
 	
-	@PostMapping(value="/benevole/add/b")
+	@PostMapping(value="/benevole/add/b/{username}/{password}")
 	public void addUser(@PathVariable String username,@PathVariable String password) {
 		System.out.println("username : " + username + " password : "+ password);
 	}
