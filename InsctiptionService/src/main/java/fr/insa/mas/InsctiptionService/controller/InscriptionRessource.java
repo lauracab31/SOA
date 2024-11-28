@@ -3,6 +3,8 @@ package fr.insa.mas.InsctiptionService.controller;
 import java.sql.Statement;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,34 +24,40 @@ public class InscriptionRessource {
 	    System.out.println("Adding user to database...");
 	    addUser(username, password);
 	    System.out.println("User added successfully!");
+	    int id= get_id(username);
+	    System.out.println("id récupéré"+id);
+	    ajoutBenevole(id);
+	    System.out.println("Bénévole ajouté");
 	    closeConnection();
 	}
-
-	/*
-	@PostMapping("/benevole/{username}/{password}")
-	public void addBenevole(@PathVariable String username, @PathVariable String password) {
-		System.out.println("username : " + username + " password : "+ password);
-		connexionBDD();
-		System.out.println("username : " + username + " password : "+ password);
-		addUser(username, password);
-	//	addBenevole
-		
-	}
-	*/
 	
-	/*
-	@PostMapping("/Demandeur")
+	@PostMapping("/demandeur/{username}/{password}")
 	public void addDemandeur(@PathVariable String username, @PathVariable String password) {
-		connexionBDD();
-	//	ajoutDemandeur();
+	    System.out.println("username : " + username + " password : " + password);
+	    connexionBDD();
+	    System.out.println("Adding user to database...");
+	    addUser(username, password);
+	    System.out.println("User added successfully!");
+	    int id= get_id(username);
+	    System.out.println("id récupéré"+id);
+	    ajoutDemandeur(id);
+	    System.out.println("demandeur ajouté");
+	    closeConnection();
 	}
 	
-	@PostMapping("/Validateur")
+	@PostMapping("/validateur/{username}/{password}")
 	public void addValidateur(@PathVariable String username, @PathVariable String password) {
-		connexionBDD();
-	//	ajoutValidateur();
-	}*/
-	
+	    System.out.println("username : " + username + " password : " + password);
+	    connexionBDD();
+	    System.out.println("Adding user to database...");
+	    addUser(username, password);
+	    System.out.println("User added successfully!");
+	    int id= get_id(username);
+	    System.out.println("id récupéré"+id);
+	    ajoutValidateur(id);
+	    System.out.println("validateur ajouté");
+	    closeConnection();
+	}	
 
 	
 	public void connexionBDD() {
@@ -91,10 +99,60 @@ public class InscriptionRessource {
 				
 			}
 			
+			
+			public static int get_id(String username) {
+			    int id = 0; // Default value in case the user is not found
+			    String query = "SELECT idUser FROM User WHERE username = ?";
+
+			    try (PreparedStatement pstmt = con.prepareStatement(query)) {
+			        // Set the parameter in the query
+			        pstmt.setString(1, username);
+
+			        // Execute the query
+			        try (ResultSet rs = pstmt.executeQuery()) {
+			            // Process the result set
+			            if (rs.next()) {
+			                id = rs.getInt("idUser");
+			            }
+			        }
+			    } catch (SQLException e) {
+			        System.out.println("Error while retrieving user ID: " + e.getMessage());
+			        e.printStackTrace();
+			    }
+			    return id;
+			}
+
+			
 			public static void ajoutBenevole(int id) {
 				
-				String requete = "INSERT INTO Benevole (id) "
-						+ "VALUES ('"+ id +");";
+				String requete = "INSERT INTO Benevole (idBenevole) "
+						+ "VALUES ('"+ id +"');";
+				
+				try {
+					Statement stmt = con.createStatement();
+					stmt.executeUpdate(requete);
+				} catch (SQLException e) {
+					System.out.println(e);
+				}
+			}
+			
+			public static void ajoutDemandeur(int id) {
+				
+				String requete = "INSERT INTO Demandeur (idDemandeur) "
+						+ "VALUES ('"+ id +"');";
+				
+				try {
+					Statement stmt = con.createStatement();
+					stmt.executeUpdate(requete);
+				} catch (SQLException e) {
+					System.out.println(e);
+				}
+			}
+			
+			public static void ajoutValidateur(int id) {
+				
+				String requete = "INSERT INTO Validateur (idValidateur) "
+						+ "VALUES ('"+ id +"');";
 				
 				try {
 					Statement stmt = con.createStatement();

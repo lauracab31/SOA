@@ -2,17 +2,17 @@ package fr.insa.mas.userManagementMS.model;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement(name = "Benevole")
-public class Benevole extends User {
+@XmlRootElement(name = "Demandeur")
+public class Demandeur extends User {
 	private int id;
 	private String username;
 	private String password;
 
 
-	public Benevole() {
+	public Demandeur() {
 	}
 	
-	public Benevole(int i, String u, String p) {
+	public Demandeur(int i, String u, String p) {
 		this.id=i;
 		this.password=p;
 		this.username=u;
@@ -28,6 +28,8 @@ public class Benevole extends User {
 		this.id=id;
 		
 	}	
+	
+	
 	@Override
 	public String getUsername() {
 		return username;
@@ -51,3 +53,4 @@ public class Benevole extends User {
 	}
 
 }
+
