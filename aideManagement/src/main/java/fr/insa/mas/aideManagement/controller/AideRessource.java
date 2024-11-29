@@ -27,6 +27,7 @@ public class AideRessource {
 
 		connexionBDD();
 		addAide(message,demandeur);
+	    System.out.println("Called!");
 		closeConnection();
 	}
 	
@@ -34,6 +35,7 @@ public class AideRessource {
 	public void valideAide(@PathVariable int aideId, @PathVariable int validateurId) {
 		connexionBDD();
 		validerAide(aideId, validateurId);
+	    System.out.println("Called!");
 		closeConnection();
 	}
 	
@@ -41,6 +43,7 @@ public class AideRessource {
 	public void choisirAide(@PathVariable int aideId, @PathVariable int benevoleId) {
 		connexionBDD();
 		prendreAide(aideId, benevoleId);
+	    System.out.println("Called!");
 		closeConnection();
 	}
 	
@@ -48,6 +51,7 @@ public class AideRessource {
 	public Aide getAide(@PathVariable int aideId) {
 		connexionBDD();
 		Aide a= getAideById(aideId);
+	    System.out.println("Called!");
 		closeConnection();
 		return a;
 	}
@@ -56,6 +60,7 @@ public class AideRessource {
 	public List<Aide> getAideByBenevole(@PathVariable int idBenevole) {
 		connexionBDD();
 		List<Aide> aides = getAidesByBenevole(idBenevole);
+	    System.out.println("Called!");
 		closeConnection();
 		return aides;
 	}

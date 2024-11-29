@@ -50,6 +50,7 @@ public class UserRessource {
 	    System.out.println("id récupéré"+id);
 	    ajoutBenevole(id);
 	    System.out.println("Bénévole ajouté");
+	    System.out.println("Called!");
 	    closeConnection();
 	}
 	
@@ -64,6 +65,7 @@ public class UserRessource {
 	    System.out.println("id récupéré"+id);
 	    ajoutDemandeur(id);
 	    System.out.println("demandeur ajouté");
+	    System.out.println("Called!");
 	    closeConnection();
 	}
 	
@@ -78,6 +80,7 @@ public class UserRessource {
 	    System.out.println("id récupéré"+id);
 	    ajoutValidateur(id);
 	    System.out.println("validateur ajouté");
+	    System.out.println("Called!");
 	    closeConnection();
 	}	
 	
@@ -87,7 +90,9 @@ public class UserRessource {
 		connexionBDD();
 		id = getId(username, password);
 		closeConnection();
+	    System.out.println("Called!");
 		return id;
+		
 	}
 	
 	@GetMapping("/role/{username}/{password}")
@@ -104,6 +109,7 @@ public class UserRessource {
 		if (id != 0 && isValidateur(id)) { 
             role = 3; 
         }
+	    System.out.println("Called!");
 		closeConnection();
 		return role;
 	}
@@ -112,7 +118,9 @@ public class UserRessource {
 	public Benevole getBenevole(@PathVariable int id) {
 		connexionBDD();
 		Benevole b = getBenevoleById(id);
+	    System.out.println("Called!");
 		closeConnection();
+		
 		return b;
 	}
 	
@@ -120,6 +128,7 @@ public class UserRessource {
 	public Demandeur getDemandeur(@PathVariable int id) {
 		connexionBDD();
 		Demandeur d = getDemandeurById(id);
+	    System.out.println("Called!");
 		closeConnection();
 		return d;
 	}
@@ -128,24 +137,9 @@ public class UserRessource {
 	public Validateur getValidateur(@PathVariable int id) {
 		connexionBDD();
 		Validateur v = getValidateurById(id);
+	    System.out.println("Called!");
 		closeConnection();
 		return v;
-	}
-	
-	@GetMapping("/getAidesBenevole/{id}")
-	public List<Aide> getAideByBenevole(@PathVariable int id) {
-		RestTemplate restTemplate = new RestTemplate();
-		connexionBDD();
-	    ResponseEntity<List<Aide>> response = restTemplate.exchange(
-	            "http://localhost:8086/aide/getByBenevole/" + id,
-	            HttpMethod.GET,
-	            null,
-	            new ParameterizedTypeReference<List<Aide>>() {}
-	        );
-	        
-	        List<Aide> aides = response.getBody();
-		closeConnection();
-		return aides;
 	}
 
 	

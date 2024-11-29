@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -19,15 +20,19 @@ import fr.insa.mas.orchestratorService.model.Aide;
 @RestController
 @RequestMapping("/orchestrator")
 public class OrchestratorRessource {
+	
+	@Autowired
+	private RestTemplate restTemplate;
 	private boolean running;
 	public static Connection con = null; 
 	
 	@GetMapping("/getAidesBenevole/{id}")
 	public List<Aide> getAideByBenevole(@PathVariable int id) {
-		RestTemplate restTemplate = new RestTemplate();
+
+		
 		connexionBDD();
 	    ResponseEntity<List<Aide>> response = restTemplate.exchange(
-	            "http://localhost:8086/aide/getByBenevole/" + id,
+	            "http://aideManagement/aide/getByBenevole/" + id,
 	            HttpMethod.GET,
 	            null,
 	            new ParameterizedTypeReference<List<Aide>>() {}
