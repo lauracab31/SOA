@@ -6,7 +6,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
+import fr.insa.mas.userManagementMS.model.Aide;
 import fr.insa.mas.userManagementMS.model.Benevole;
 import fr.insa.mas.userManagementMS.model.Demandeur;
 import fr.insa.mas.userManagementMS.model.Validateur;
@@ -17,8 +19,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 
 @RestController
 @RequestMapping("/user")
@@ -124,6 +130,22 @@ public class UserRessource {
 		Validateur v = getValidateurById(id);
 		closeConnection();
 		return v;
+	}
+	
+	@GetMapping("/getAidesBenevole/{id}")
+	public List<Aide> getAideByBenevole(@PathVariable int id) {
+		RestTemplate restTemplate = new RestTemplate();
+		connexionBDD();
+	    ResponseEntity<List<Aide>> response = restTemplate.exchange(
+	            "http://localhost:8086/aide/getByBenevole/" + id,
+	            HttpMethod.GET,
+	            null,
+	            new ParameterizedTypeReference<List<Aide>>() {}
+	        );
+	        
+	        List<Aide> aides = response.getBody();
+		closeConnection();
+		return aides;
 	}
 
 	

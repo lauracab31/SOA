@@ -13,6 +13,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/aide")
@@ -48,6 +50,14 @@ public class AideRessource {
 		Aide a= getAideById(aideId);
 		closeConnection();
 		return a;
+	}
+	
+	@GetMapping("/getByBenevole/{idBenevole}")
+	public List<Aide> getAideByBenevole(@PathVariable int idBenevole) {
+		connexionBDD();
+		List<Aide> aides = getAidesByBenevole(idBenevole);
+		closeConnection();
+		return aides;
 	}
 	
 	public void connexionBDD() {
@@ -167,6 +177,34 @@ public class AideRessource {
 	    }
 
 	    return aide; 
+	}
+	
+	public List<Aide> getAidesByBenevole(int idBenevole) {
+	    String query = "SELECT idAide, description, estValide, idDemandeur, idBenevole, idValidateur FROM Aide WHERE idBenevole = ?";
+	    List<Aide> aides = new ArrayList<>();
+
+	    try (PreparedStatement pstmt = con.prepareStatement(query)) {
+	        pstmt.setInt(1, idBenevole);
+
+	        try (ResultSet rs = pstmt.executeQuery()) {
+	            while (rs.next()) {
+	                Aide aide = new Aide();
+	                aide.setId(rs.getInt("idAide"));
+	                aide.setDescription(rs.getString("description"));
+	                aide.setValide(rs.getBoolean("estValide"));
+	                aide.setIdDemandeur(rs.getInt("idDemandeur"));
+	                aide.setIdBenevole(rs.getInt("idBenevole"));
+	                aide.setIdValidateur(rs.getInt("idValidateur"));
+
+	                aides.add(aide);
+	            }
+	        }
+	    } catch (SQLException e) {
+	        System.err.println("Erreur lors de la récupération des aides pour le bénévole avec l'ID " + idBenevole + " : " + e.getMessage());
+	        e.printStackTrace();
+	    }
+
+	    return aides;
 	}
 	
 
