@@ -18,14 +18,14 @@ public class ClientConfigResource {
 	@Value("${db.port}")
 	private String dbPort;
 	
-	@GetMapping("/serverPort")
+//	@GetMapping("/serverPort")
 	public String getServerPort() {
 		return serverPort;
 	}
 	public void setServerPort(String serverPort) {
 		this.serverPort = serverPort;
 	}
-	@GetMapping("/typeConnectionDeDB")
+//	@GetMapping("/typeConnectionDeDB")
 	public String getTypeConnectionDeDB() {
 		return typeConnectionDeDB;
 	}
@@ -39,7 +39,7 @@ public class ClientConfigResource {
 	public void setDbHost(String dbHost) {
 		this.dbHost = dbHost;
 	}
-	@GetMapping("/dbPort")
+//	@GetMapping("/dbPort")
 	public String getDbPort() {
 		return dbPort;
 	}
