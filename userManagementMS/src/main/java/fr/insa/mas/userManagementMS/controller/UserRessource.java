@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import fr.insa.mas.userManagementMS.model.Aide;
 import fr.insa.mas.userManagementMS.model.Benevole;
 import fr.insa.mas.userManagementMS.model.Demandeur;
 import fr.insa.mas.userManagementMS.model.Validateur;
@@ -31,12 +30,6 @@ import org.springframework.http.ResponseEntity;
 public class UserRessource {
 	private boolean running;
 	public static Connection con = null; 
-
-	
-	@DeleteMapping(value="/benevole/del/{username}")
-	public void benevoleDel(@PathVariable String username) {
-		System.out.println("On a effacé l'utilisateur "+username);
-	}
 
 	
 	@PostMapping("/benevole/{username}/{password}")
